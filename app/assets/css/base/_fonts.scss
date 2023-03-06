@@ -1,0 +1,20 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa&family=Montserrat:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech&display=swap');
+
+@mixin fontComfortaa {
+    font-family: 'Comfortaa', sans-serif;
+}
+
+@mixin fontMontserrat {
+    font-family: 'Montserrat', sans-serif;
+}
+
+@mixin fontJulius {
+    font-family: 'Julius Sans One', sans-serif;
+}
+
+@mixin fontShareTech {
+    font-family: 'Share Tech', sans-serif;
+}

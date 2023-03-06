@@ -1,0 +1,82 @@
+.clearfix {
+    clear: both;
+
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
+
+
+.fade {
+    animation: fade 0.5s alternate forwards;
+}
+@keyframes fade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.color-white {
+    color: #fff !important;
+}
+.color-green {
+    color:$color-green !important;
+}
+.color-blue {
+    color:$color-blue !important;
+}
+
+.fixed {
+    position: fixed !important;
+}
+
+.bg-grey {
+    position: relative;
+    &:before {
+        content:"";
+        background: #f7f7f7;
+        display: block;
+        position: absolute;
+        left: -4000px;
+        right: -4000px;
+        bottom: 0;
+        top: 0;
+        z-index: -1;
+    }
+}
+.bg-grey2 {
+    position: relative;
+    &:before {
+        content:"";
+        background: #f2f2f2;
+        display: block;
+        position: absolute;
+        left: -4000px;
+        right: -4000px;
+        bottom: 0;
+        top: 0;
+        z-index: -1;
+    }
+}
+
+.w-100 {
+    width: 100%;
+}
+.h-100 {
+    height: 100%;
+}
+.w-auto {
+    width: auto !important;
+}
+.font-noto {
+    font-family: 'Noto Sans', sans-serif;
+}
+.font-simsun {
+    font-family: 'SimSun', sans-serif;
+}

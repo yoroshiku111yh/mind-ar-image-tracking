@@ -1,0 +1,23 @@
+/**
+ * Basic typography style for copy text
+ */
+
+ $viewBaseDesign : 1920;
+ html {
+    font-size: calc((14 * 100 / $viewBaseDesign)) (+vw);
+    @include screen(mobile) {
+        font-size: calc((14 * 100 / 375)) (+vw);
+    }
+}
+
+body {
+    color: #5c5e5c;
+    font-size: rem(14);
+    font-weight: 400;
+    @include screen(mobile) {
+        font-size: 14px;
+    }
+    // @include screen(mobile) {
+    //     font-size: rem(13);
+    // }
+}

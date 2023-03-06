@@ -1,0 +1,30 @@
+{% extends "_layout/layout.twig" %}
+{% block page %}
+	<a-scene mindar-image="imageTargetSrc: {{assets_url}}/targets/targets.mind; maxTrack: 1; warmupTolerance: 1; missTolerance: 1" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" inspector="" keyboard-shortcuts="" screenshot="">
+		<a-assets>
+			<a-asset-item id="bearModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.5/examples/image-tracking/assets/band-example/bear/scene.gltf"></a-asset-item>
+			<a-asset-item id="raccoonModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.5/examples/image-tracking/assets/band-example/raccoon/scene.gltf"></a-asset-item>
+		</a-assets>
+
+		<a-camera position="0 0 0" look-controls="enabled: false" camera="" rotation="" wasd-controls=""></a-camera>
+
+		<a-entity mindar-image-target="targetIndex: 0">
+			<a-entity geometry="primitive: plane; height: 0.5; width: 1" position="0 0 0" material="side: double; shader:grid-glitch; color: blue;"></a-entity>
+		</a-entity>
+
+		{# <a-entity mindar-image-target="targetIndex: 0">
+					<a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#raccoonModel" animation-mixer="" gltf-model=""></a-gltf-model>
+				</a-entity> #}
+		{# <a-entity mindar-image-target="targetIndex: 1">
+					<a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.05 0.05 0.05" src="#bearModel" animation-mixer="" gltf-model=""></a-gltf-model>
+				</a-entity> #}
+		<div class="a-loader-title" style="display: none;"></div>
+		<a-entity light="" data-aframe-default-light="" aframe-injected=""></a-entity>
+		<a-entity light="" position="" data-aframe-default-light="" aframe-injected=""></a-entity>
+	</a-scene>
+{% endblock %}
+{% block after_js %}
+	<script src="https://unpkg.com/tilt.js@1.1.21/dest/tilt.jquery.min.js"></script>
+	<script src="{{assets_url}}/js/test-mind-ar.js"></script>
+	<!-- Load Tilt.js library -->
+{% endblock %}

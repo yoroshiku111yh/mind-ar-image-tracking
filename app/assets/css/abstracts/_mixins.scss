@@ -1,0 +1,324 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass mixins.
+// -----------------------------------------------------------------------------
+/// Event wrapper
+/// @author Harry Roberts
+/// @param {Bool} $self [false] - Whether or not to include current selector
+/// @link https://twitter.com/csswizardry/status/478938530342006784 Original tweet from Harry Roberts
+
+/* BREAKPOINTS */
+$breakpoints: ( mobile: 768px, tablet: 992px, desktop: 1200px, medium-desktop: 1600px);
+@mixin screen($breakpoint, $mobileFirst: false) {
+    @if $mobileFirst {
+        @if map-has-key($breakpoints, $breakpoint) {
+            @media (min-width: #{map-get($breakpoints, $breakpoint)}) {
+                @content;
+            }
+        }
+        @else {
+            @media (min-width: $breakpoint) {
+                @content;
+            }
+        }
+    }
+    @else {
+        @if map-has-key($breakpoints, $breakpoint) {
+            @media (max-width: map-get($breakpoints, $breakpoint) - 1px) {
+                @content;
+            }
+        }
+        @else {
+            @media (max-width: $breakpoint - 1px) {
+                @content;
+            }
+        }
+    }
+}
+
+@mixin screenHeight($breakpoint, $mobileFirst: false) {
+    @if $mobileFirst {
+        @if map-has-key($breakpoints, $breakpoint) {
+            @media (min-height: #{map-get($breakpoints, $breakpoint)}) {
+                @content;
+            }
+        }
+        @else {
+            @media (min-height: $breakpoint) {
+                @content;
+            }
+        }
+    }
+    @else {
+        @if map-has-key($breakpoints, $breakpoint) {
+            @media (max-height: map-get($breakpoints, $breakpoint) - 1px) {
+                @content;
+            }
+        }
+        @else {
+            @media (max-height: $breakpoint - 1px) {
+                @content;
+            }
+        }
+    }
+}
+
+@mixin on-event($self: false) {
+     @if $self{
+        &,
+        &:active,
+        &:focus,
+        &:hover {
+            @content;
+        }
+    }
+    @else {
+        &:active,
+        &:focus,
+        &:hover {
+            @content;
+        }
+    }
+}
+/// Make a context based selector a little more friendly
+/// @author Hugo Giraudel
+/// @param {String} $context
+@mixin when-inside($context) {
+    #{$context} & {
+        @content;
+    }
+}
+
+@mixin box-shadow($shadow) {
+    -webkit-box-shadow: $shadow;
+    -moz-box-shadow: $shadow;
+    box-shadow: $shadow;
+}
+@mixin transform($transforms) {
+    -moz-transform: $transforms;
+    -o-transform: $transforms;
+    -ms-transform: $transforms;
+    -webkit-transform: $transforms;
+    transform: $transforms;
+}
+// rotate
+@mixin rotate($deg) {
+     @include transform(rotate(#{$deg}deg));
+}
+// scale
+@mixin scale($scale) {
+     @include transform(scale($scale));
+}
+// translate
+@mixin translate($x, $y) {
+     @include transform(translate($x, $y));
+}
+// skew
+@mixin skew($x, $y) {
+     @include transform(skew(#{$x}deg, #{$y}deg));
+}
+//transform origin
+@mixin transform-origin($origin) {
+    moz-transform-origin: $origin;
+    -o-transform-origin: $origin;
+    -ms-transform-origin: $origin;
+    -webkit-transform-origin: $origin;
+    transform-origin: $origin;
+}
+
+@mixin radius ($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    -o-border-radius: $radius;
+    border-radius: $radius;
+}
+@mixin shadow-out ($h, $v, $blur, $color) {
+    -webkit-box-shadow: $h $v $blur $color;
+    -moz-box-shadow: $h $v $blur $color;
+    box-shadow: $h $v $blur $color;
+}
+@mixin shadow-in ($h, $v, $blur, $color) {
+    -webkit-box-shadow: inset $h $v $blur $color;
+    -moz-box-shadow: inset $h $v $blur $color;
+    box-shadow: inset $h $v $blur $color;
+}
+
+@mixin font($fontName, $fontSize, $fontColor) {
+    font-family: $fontName;
+    font-size: $fontSize;
+    color: $fontColor;
+}
+@mixin fontStyle ($fontName, $fontSize, $lineHeight, $padding, $marginBottom) {
+    font-family: $fontName;
+    font-size: $fontSize;
+    line-height: $lineHeight;
+    padding: $padding;
+    margin-bottom: $marginBottom;
+}
+
+@mixin textGradient($fromColor, $toColor) {
+    background: -webkit-linear-gradient($fromColor, $toColor);
+    background: linear-gradient($fromColor, $toColor);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@mixin disableUserSelection() {
+    user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+}
+@mixin textShadow ($txtshadow) {
+    text-shadow: $txtshadow;
+    -webkit-text-shadow: $txtshadow;
+}
+@mixin absoluteReset() {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+@mixin beforeAfterReset() {
+    display: block;
+    content: '';
+}
+
+@mixin placeholder {
+    &::-webkit-input-placeholder {@content}
+    &:-moz-placeholder           {@content}
+    &::-moz-placeholder          {@content}
+    &:-ms-input-placeholder      {@content}
+}
+@mixin keyframes($name) {
+     @-webkit-keyframes #{$name}{
+        @content;
+    }
+    @-moz-keyframes #{$name} {
+         @content;
+    }
+    @-ms-keyframes #{$name} {
+         @content;
+    }
+    @keyframes #{$name} {
+         @content;
+    }
+}
+@mixin animation($name, $dur, $easing, $delay, $repeat, $direction, $fillMode, $state) {
+    /* @keyframes name | duration | timing-function | delay |
+       iteration-count | direction | fill-mode | play-state */
+    /*animation: slidein 3s ease-in 1s 2 reverse both paused;*/
+    -webkit-animation: $name $dur $easing $delay $repeat $direction $fillMode $state;
+    -moz-animation: $name $dur $easing $delay $repeat $direction $fillMode $state;
+    -ms-animation: $name $dur $easing $delay $repeat $direction $fillMode $state;
+    -o-animation: $name $dur $easing $delay $repeat $direction $fillMode $state;
+    animation: $name $dur $easing $delay $repeat $direction $fillMode $state;
+}
+@mixin removeSelectArrow {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+
+    &::-ms-expand {
+        display: none;
+    }
+}
+@mixin fontSize($pixel) {
+    font-size: ($pixel/18)+rem;
+}
+@mixin shadow($shadow) {
+    -webkit-box-shadow: $shadow;
+    -moz-box-shadow: $shadow;
+    box-shadow: $shadow;
+}
+@mixin radius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    border-radius: $radius;
+}
+@mixin text-ellipsis($lines-to-show) {
+    display: block;
+    display: -webkit-box;
+    -webkit-line-clamp: $lines-to-show;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+@mixin line-clamp($lineHeight, $line, $bgcl-from, $bgcl-to, $maxHeight: false ){
+    display            : block;
+    display            : -webkit-box;
+    -webkit-box-orient : vertical;
+    position           : relative;
+
+    line-height        : $lineHeight;
+    overflow           : hidden;
+    text-overflow      : ellipsis;
+    padding            : 0 !important;
+    &:after{
+        content    : '';
+        text-align : right;
+        bottom     : 0;
+        right      : 0;
+        width      : 25%;
+        display    : block;
+        position   : absolute;
+        height     : calc(1em * 1.35);
+        background : linear-gradient(to right, $bgcl-from, $bgcl-to 75%);
+    }
+    @supports (-webkit-line-clamp: 1)
+    {
+        &:after
+        {
+            display : none !important;
+        }
+    }
+    -webkit-line-clamp : $line !important;
+    line-clamp : $line !important;
+    @if $maxHeight {
+        max-height     : calc(1em * #{$lineHeight} * #{$line} - 2px) !important;
+    } @else {
+        height         : calc(1em * #{$lineHeight} * #{$line} - 2px) !important;
+    }
+
+}
+@mixin image-cover {
+    position: absolute;
+    left: -10000%;
+    right: -10000%;
+    top: -10000%;
+    bottom: -10000%;
+    margin: auto;
+    min-width: 1000%;
+    min-height: 1000%;
+    -webkit-transform: scale(0.1);
+    transform: scale(0.1);
+}
+
+@mixin scrollBar($width) {
+    //scroll
+    scrollbar-arrow-color: #984100;
+    scrollbar-face-color: #984100;
+    scrollbar-highlight-color: #984100;
+    scrollbar-shadow-color: #984100;
+
+    &::-webkit-scrollbar {
+        width: $width;
+    }
+    /* Track */
+    &::-webkit-scrollbar-track {
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        background: #984100;
+    }
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        background: #ffb57d;
+    }
+
+    &::-webkit-scrollbar-thumb:window-inactive {
+        background: #ffb57d;
+    }
+    //END scroll
+}

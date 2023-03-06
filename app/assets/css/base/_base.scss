@@ -1,0 +1,90 @@
+// -----------------------------------------------------------------------------
+// This file contains very basic styles.
+// -----------------------------------------------------------------------------
+/**
+ * Set up a decent box model on the root element
+ */
+
+html {
+    box-sizing: border-box;
+}
+/**
+ * Make all elements from the DOM inherit from the parent box-sizing
+ * Since `*` has a specificity of 0, it does not override the `html` value
+ * making all elements inheriting from the root box-sizing value
+ * See: https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
+ */
+
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+*:focus,
+*:hover {
+    text-decoration: none !important;
+    outline: none !important;
+}
+/**
+ * Basic styles for links
+ */
+
+a {
+    text-decoration: none;
+    outline: none !important;
+    color: $color-blue;
+    @include on-event {
+        text-decoration: underline;
+    }
+}
+
+.svg {
+    display: none;
+
+    &.replaced-svg {
+        display: inline-block;
+    }
+}
+
+.lazy {
+    opacity: 0;
+    transition: 0.3s;
+    &.loaded {
+        opacity: 1;
+    }
+}
+
+.container{
+    max-width: rem(1440);
+}
+
+
+.-visible-820{
+    display: none !important;
+    @media screen and (max-width : 821px) {
+        display: block !important;
+    }
+}
+// ul {
+//     padding: 0;
+//     margin: 0;
+// }
+// li {
+//     list-style: none;
+// }
+// input[type='number'] {
+//     -moz-appearance:textfield;
+// }
+//
+// input::-webkit-outer-spin-button,
+// input::-webkit-inner-spin-button {
+//     -webkit-appearance: none;
+// }
+// .clear {
+//     clear: both;
+// }
+// .fancybox-lock {
+//     overflow: visible !important;
+//     width: auto;
+// }
