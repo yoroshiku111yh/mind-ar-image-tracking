@@ -39,10 +39,12 @@ export default class MindAr {
         const scriptFragment = document.querySelector('#test-fragment').innerHTML;
         AFRAME.registerShader('grid-glitch', {
             schema: {
-                color: { type: 'color', is: 'uniform' },
-                timeMsec: { type: 'time', is: 'uniform' }
+                //colorBg: { type: 'color', is: 'uniform' },
+                timeMsec: { type: 'time', is: 'uniform' },
+                timeHold : {type : 'float', is : 'uniform'},
+                bg1 : { type : 'map', is: 'uniform' },
+                bg2 : { type : 'map', is: 'uniform' }
             },
-
             vertexShader: scriptVertex,
             fragmentShader: scriptFragment
         });

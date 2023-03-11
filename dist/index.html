@@ -11,35 +11,124 @@
 
 		
 
-		<link rel="stylesheet" href="assets/css/app.css"> 
-		<script type="text/javascript" src="assets/misc/jquery/jquery.js"></script>
+		
+				<script type="text/javascript" src="assets/misc/jquery/jquery.js"></script>
+		<script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+		<script src="assets/js/mind-ar/mindar-image-aframe.prod.js"></script>
 	</head>
 
 	<body>
 
 		<!-- ... the rest of the HTML page ... -->
 		<header></header>
-		
-        
-	<main id="main" data-module="LazyLoadInit">
-		<img alt="A lazy image" src="assets/images/dummies/1x1.jpg" class="lazy test-img" data-src="assets/images/test.jpg"/>
-	</main>
+			<a-scene mindar-image="imageTargetSrc: assets/targets/targets.mind; maxTrack: 1; warmupTolerance: 1; missTolerance: 1" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" inspector="" keyboard-shortcuts="" screenshot="">
+		<a-assets>
+			
+			<img id="layer-default" src="assets/images/card-1.jpg"/>
+			<img id="layer-2" src="assets/images/card-2.jpg"/>
+		</a-assets>
 
+		<a-camera position="0 0 0" look-controls="enabled: false" camera="" rotation="" wasd-controls=""></a-camera>
+
+		<a-entity mindar-image-target="targetIndex: 0">
+			<a-entity geometry="primitive: plane; height: 0.5; width: 1" position="0 0 0" material="side: double; shader:grid-glitch; bg1 : #layer-default; bg2: #layer-2 ; timeHold : 2.5"></a-entity>
+		</a-entity>
+		
+		
+		
+		<div class="a-loader-title" style="display: none;"> </div>
+		<a-entity light="" data-aframe-default-light="" aframe-injected=""></a-entity>
+		<a-entity light="" position="" data-aframe-default-light="" aframe-injected=""></a-entity>
+	</a-scene>
 		<footer></footer>
+		
+		
 
-		
-
-		
-		
-		
-		<script src="assets/js/vendor.js"></script>
+				<script src="assets/js/vendor.js"></script>
 		<script src="assets/js/app.js"></script>
 		
+			<script type="x-shader/x-fragment" id="test-fragment">
+		varying vec2 vUv;
+		uniform vec3 colorBg;
+		uniform float timeHold;
+		uniform float timeMsec; // A-Frame time in milliseconds.
+		uniform sampler2D bg1;			
+		uniform sampler2D bg2;
+
+		vec3 TextureSource(vec2 uv)
+		{
+			return texture(bg1, uv).rgb;;
+		}
 		
+		vec3 TextureTarget(vec2 uv)
+		{
+			return texture(bg2, uv).rgb; //rrr
+		}
+		
+		
+		float Hash( vec2 p)
+		{
+			vec3 p2 = vec3(p.xy,1.0);
+		    return fract(sin(dot(p2,vec3(37.1,61.7, 12.4)))*3758.5453123);
+		}
+		
+		float noise(in vec2 p)
+		{
+		    vec2 i = floor(p);
+			vec2 f = fract(p);
+			f *= f * (3.0-2.0*f);
+		
+		    return mix(mix(Hash(i + vec2(0.,0.)), Hash(i + vec2(1.,0.)),f.x),
+				mix(Hash(i + vec2(0.,1.)), Hash(i + vec2(1.,1.)),f.x),
+				f.y);
+		}
+		
+		float fbm(vec2 p) 
+		{
+			float v = 0.0;
+			v += noise(p*1.)*.5;
+			v += noise(p*2.)*.25;
+			v += noise(p*4.)*.125;
+			return v;
+		}
+		
+		
+		void main() {
+			float time = timeMsec / 1000.0; // Convert from A-Frame milliseconds to typical time in seconds.
+			vec2 uv = vUv;
+			vec3 src = TextureSource(uv);
+			vec3 tgt = TextureTarget(uv);
+			vec3 col = src;
+			
+			uv.x -= 1.5;
+			
+			float ctime = mod(time*.5,timeHold);
+			
+			// burn
+			float d = uv.x+uv.y*0.5 + 0.5*fbm(uv*15.1) + ctime*1.3;
+			if (d >0.35) col = clamp(col-(d-0.35)*10.,0.0,1.0);
+			if (d >0.47) {
+				if (d < 0.5 ) col += (d-0.4)*33.0*0.5*(0.0+noise(100.*uv+vec2(-ctime*2.,0.)))*vec3(1.5,0.5,0.0);
+				else col += tgt; 
+			}
+
+			gl_FragColor = vec4(col, 1.0);
+		}
+	</script>
+	<script type="x-shader/x-vertex" id="test-vertex">
+		// vertex.glsl
+								
+		varying vec2 vUv;
+		
+		void main() {
+			vUv = uv;
+			gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+		}
+	</script>
 	<script src="https://unpkg.com/tilt.js@1.1.21/dest/tilt.jquery.min.js"></script>
+	<script src="assets/js/test-mind-ar.js"></script>
 	<!-- Load Tilt.js library -->
-
-
 
 	</body>
 
